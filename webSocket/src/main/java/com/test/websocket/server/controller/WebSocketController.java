@@ -44,8 +44,11 @@ public class WebSocketController {
     @PostMapping("/send_user")
     public GeneralResult<String> sendDefinition(@RequestBody SetDefinition requestVo) throws BusinessException {
         DefinitionVo payload = new DefinitionVo();
+        //设备定义数组
         payload.setDevices(requestVo.getDevices());
+        //设备定义版本
         payload.setVersion(requestVo.getVersion());
+        //将payload的内容存入,生成要发送的json
         String packet = sendAction(requestVo.getStationNo(), "device.set_definition", payload);
         TextWebSocketFrame frame = new TextWebSocketFrame(packet);
         springWebSocketHandler.sendMessageToUser(requestVo.getStationNo(), frame);
@@ -53,7 +56,15 @@ public class WebSocketController {
         return GeneralResult.ok("success");
     }
 
-
+    /**
+     * 生成发送的json
+     *
+     * @param stationNo 设备id
+     * @param action    设备具体执行动作
+     * @param payload   发送的具体数据内容，该数据类型与具体业务相关
+     * @return json
+     * @throws BusinessException BusinessException
+     */
     public String sendAction(String stationNo, String action, Object payload) throws BusinessException {
         StationPacket packet = new StationPacket();
         packet.setType(StationPacket.REQUEST);

@@ -27,6 +27,7 @@ import java.util.Locale;
 public class StationPacketUtils {
     private static final FastDateFormat TIMESTAMP_FORMAT = FastDateFormat.getInstance("YYYYMMddHHmmssSSS");
 
+
     public static StationPacket response(StationPacket request, int code, String msg, Object payload) {
         StationPacketPayloadImpl payloadWrapper = new StationPacketPayloadImpl(payload);
         StationPacket resp = new StationPacket();
@@ -61,6 +62,24 @@ public class StationPacketUtils {
         return resp;
     }
 
+    /**
+     * 排序组合+签名密钥
+     * 字符序正序排序，伪代码如下：[
+     * 'action=device.define',
+     * 'actionVer=V0.1',
+     * 'priority=3',
+     * 'protocolVer=1',
+     * 'timestamp=20220708101010123',
+     * 'trace=T1234567890',
+     * 'type=request'
+     * ]
+     * 拼接，使用&作为分割符将上述字符串列表进行拼接（开头和末尾俊不出现&）,之后再在该字符串末尾凭借签名密钥(signKey)
+     * 使用MD5(Hex)算法对生成的字符串签名，签名结果统一为大写
+     *
+     * @param packet  签名内容
+     * @param signKey 密钥
+     * @return String
+     */
     public static String sign(StationPacket packet, String signKey) {
         List<String> items = Lists.newArrayList();
         items.add("type=" + packet.getType());
