@@ -8,7 +8,7 @@ import com.test.websocket.server.packet.StationPacketExt;
 import com.test.websocket.server.packet.StationPacketHeader;
 import com.test.websocket.server.packet.StationPacketPayloadImpl;
 import com.test.websocket.server.vo.DefinitionVo;
-import com.test.websocket.server.vo.RequestVo;
+import com.test.websocket.server.vo.SetDefinition;
 import com.test.websocket.server.util.GeneralResult;
 import com.test.websocket.server.util.StationPacketUtils;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -42,7 +42,7 @@ public class WebSocketController {
      * 指定发送
      */
     @PostMapping("/send_user")
-    public GeneralResult<String> sendDefinition(@RequestBody RequestVo requestVo) throws BusinessException {
+    public GeneralResult<String> sendDefinition(@RequestBody SetDefinition requestVo) throws BusinessException {
         DefinitionVo payload = new DefinitionVo();
         payload.setDevices(requestVo.getDevices());
         payload.setVersion(requestVo.getVersion());
