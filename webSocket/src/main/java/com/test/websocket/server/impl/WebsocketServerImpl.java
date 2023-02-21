@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class WebsocketServerImpl implements WebsocketServer {
+    public static final int WS_SERVER_PORT = 8000;
     static final Logger log = LoggerFactory.getLogger(WebsocketServerImpl.class);
     private final SpringWebSocketHandler springWebSocketHandler;
 
@@ -53,7 +54,7 @@ public class WebsocketServerImpl implements WebsocketServer {
                     pipeline.addLast(new ChunkedWriteHandler());
                     //post请求分三部分. request line / request header / message body
                     // HttpObjectAggregator将多个信息转化成单一的request或者response对象
-                    pipeline.addLast(new HttpObjectAggregator(8000));
+                    pipeline.addLast(new HttpObjectAggregator(WS_SERVER_PORT));
                     //自定义handler处理业务逻辑
                     pipeline.addLast(new MyWsHandler(springWebSocketHandler));
                 }

@@ -1,4 +1,4 @@
-package com.test.websocket.server.controller;
+package com.test.websocket.controller;
 
 import com.monolith.atom.scada.broker.packet.StationPacket;
 import com.test.websocket.server.exception.BusinessException;
